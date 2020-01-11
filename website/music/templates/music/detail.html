@@ -1,0 +1,25 @@
+<img src="{{ album.album_logo }}" alt="">
+<h1>{{ album.album_title}}</h1>
+<h3>{{ album.artist}}</h3>
+
+{% if error_message %}
+<p><strong>{{ error_message }}</strong></p>
+{% endif %}
+
+<form action="{% url 'music:index-favorite' album.id %}" method="POST">
+    {% csrf_token %}
+
+    {% for song in album.song_set.all %}
+    <input type="radio" id="song{{ forloop.counter }}" name="song" value="{{ song.id }}"}>
+    <label for="song{{ forloop.counter}}">
+        {{ song.song_title }}
+
+        {% if song.is_favorite %}
+            <p><strong>****</strong></p>
+        {% endif %}
+
+    </label>
+    <br>
+    {% endfor %}
+<input type="submit" value="Favorite">
+</form>
